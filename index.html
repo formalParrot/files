@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Files</title>
+        <style>
+            body {
+                font-family: monospace;
+                padding: 20px;
+            }
+            a {
+                display: block;
+                padding: 2px 0;
+            }
+            #path {
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="path"></div>
+        <div id="list"></div>
+        <script>
+            let tree = [];
+
+            function getNode(pathStr) {
+                if (!pathStr) return { children: tree };
+                let cur = tree;
+                for (const seg of pathStr.split("/")) {
+                    const found = cur.find((n) => n.name === seg);
+                    if (!found) return null;
+                    cur = found.children || [];
+                }
+                return { children: cur };
+            }
+
+            function render(pathStr) {
+                const node = getNode(pathStr);
+                const items = node ? node.children : [];
+                const segs = pathStr ? pathStr.split("/") : [];
+
+                // breadcrumb
+                let bc = '<a href="#" data-path="">./</a>';
+                segs.forEach((s, i) => {
+                    const p = segs.slice(0, i + 1).join("/");
+                    bc += ' / <a href="#" data-path="' + p + '">' + s + "</a>";
+                });
+                document.getElementById("path").innerHTML = bc;
+
+                // listing
+                let html = "";
+                if (pathStr) {
+                    const parent = segs.slice(0, -1).join("/");
+                    html += '<a href="#" data-path="' + parent + '">..</a>';
+                }
+                items
+                    .sort((a, b) =>
+                        a.type === b.type
+                            ? a.name.localeCompare(b.name)
+                            : a.type === "dir"
+                              ? -1
+                              : 1,
+                    )
+                    .forEach((item) => {
+                        if (item.type === "dir")
+                            html +=
+                                '<a href="#" data-path="' +
+                                item.path +
+                                '">' +
+                                item.name +
+                                "/</a>";
+                        else
+                            html +=
+                                '<a href="./' +
+                                item.path +
+                                '">' +
+                                item.name +
+                                "</a>";
+                    });
+
+                document.getElementById("list").innerHTML = html || "Empty.";
+
+                document.querySelectorAll("[data-path]").forEach((el) => {
+                    el.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        render(el.dataset.path);
+                    });
+                });
+            }
+
+            fetch("./files.json")
+                .then((r) => r.json())
+                .then((data) => {
+                    tree = data;
+                    render("");
+                })
+                .catch(() => {
+                    document.getElementById("list").textContent =
+                        "Run generate.js first.";
+                });
+        </script>
+    </body>
+</html>

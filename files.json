@@ -1,0 +1,38 @@
+[
+  {
+    "name": "gondola",
+    "path": "gondola",
+    "type": "dir",
+    "children": [
+      {
+        "name": "bare-cabin.nbt",
+        "path": "gondola/bare-cabin.nbt",
+        "type": "file"
+      },
+      { "name": "cabin-1.nbt", "path": "gondola/cabin-1.nbt", "type": "file" },
+      { "name": "cabin-2.nbt", "path": "gondola/cabin-2.nbt", "type": "file" },
+      { "name": "cabin-3.nbt", "path": "gondola/cabin-3.nbt", "type": "file" },
+      { "name": "cabin-4.nbt", "path": "gondola/cabin-4.nbt", "type": "file" },
+      {
+        "name": "cabin-skilift-1.nbt",
+        "path": "gondola/cabin-skilift-1.nbt",
+        "type": "file"
+      },
+      {
+        "name": "connector-module.nbt",
+        "path": "gondola/connector-module.nbt",
+        "type": "file"
+      },
+      {
+        "name": "pylon-straight.nbt",
+        "path": "gondola/pylon-straight.nbt",
+        "type": "file"
+      },
+      {
+        "name": "station-uturn.nbt",
+        "path": "gondola/station-uturn.nbt",
+        "type": "file"
+      }
+    ]
+  }
+]
